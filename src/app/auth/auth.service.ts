@@ -1,7 +1,6 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 import { UserLoginInterface } from './user-login.interface';
 import { Observable } from 'rxjs';
 import { AccessToken } from './access-token.interface';
@@ -10,7 +9,7 @@ import { AccessToken } from './access-token.interface';
 })
 export class AuthService {
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(PLATFORM_ID) private platformId: object,
     private http: HttpClient
   ) {}
   private token: string;

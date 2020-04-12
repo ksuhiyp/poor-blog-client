@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
-import { AuthInterceptor } from '../common/interceptors/auth.interceptor';
+import { AuthInterceptor } from '../shared/interceptors/auth.interceptor';
 
 const routes: Routes = [
   {

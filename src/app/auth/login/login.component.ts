@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
-import { tap } from 'rxjs/operators';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { HttpResponse } from '@angular/common/http';
+import { AccessToken } from '../access-token.interface';
 
 @Component({
   selector: 'app-login',
@@ -8,12 +11,17 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  constructor(private authService: AuthService) {}
-
+  constructor(private authService: AuthService, private fb: FormBuilder) {}
+  loginForm = this.fb.group({
+    username: ['', Validators.required],
+    password: ['', Validators.required],
+  });
   ngOnInit(): void {
+    // this.authService.login({ username: 'suhayb', password: 'test' });
+  }
+  onSubmit(){
     this.authService
-      .login({ username: 'suhayb', password: 'test' })
-      .pipe(tap(() => console.log(23)))
+      .login(this.loginForm.value)
       .subscribe();
   }
 }

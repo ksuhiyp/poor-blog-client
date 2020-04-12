@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "debug": "DEBUG='*' ng serve --configuration=debug",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -16,6 +17,7 @@
     "@angular/common": "~9.1.1",
     "@angular/compiler": "~9.1.1",
     "@angular/core": "~9.1.1",
+    "@angular/flex-layout": "^9.0.0-beta.29",
     "@angular/forms": "~9.1.1",
     "@angular/material": "^9.2.0",
     "@angular/platform-browser": "~9.1.1",

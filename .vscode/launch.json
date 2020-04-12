@@ -1,0 +1,28 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+   
+      
+      {
+        "name": "Client",
+        "type": "firefox",
+        "request": "launch",
+        "url": "http://localhost:4200/#",
+        "webRoot": "${workspaceFolder}",
+        "firefoxArgs": [ 
+            "-start-debugger-server","-url https://localhost:4200/#"
+        ],
+        "reloadOnChange": {
+            "watch": [
+                "${workspaceFolder}/**/*.ts",
+                "${workspaceFolder}/**/*.html",
+                "${workspaceFolder}/**/*.css",
+                "${workspaceFolder}/**/*.scss"
+            ],
+            "ignore": [
+                "${workspaceFolder}/node_modules/**"
+            ]
+        }
+    }
+    ]
+  }
