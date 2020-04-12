@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { HttpResponse } from '@angular/common/http';
-import { AccessToken } from '../access-token.interface';
+import { debounce, debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -16,12 +14,8 @@ export class LoginComponent implements OnInit {
     username: ['', Validators.required],
     password: ['', Validators.required],
   });
-  ngOnInit(): void {
-    // this.authService.login({ username: 'suhayb', password: 'test' });
-  }
-  onSubmit(){
-    this.authService
-      .login(this.loginForm.value)
-      .subscribe();
+  ngOnInit(): void {}
+  onSubmit() {
+    this.authService.login(this.loginForm.value).subscribe();
   }
 }
