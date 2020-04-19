@@ -1,30 +1,25 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthModule } from './auth/auth.module';
-import { BrowserModule } from '@angular/platform-browser';
 import { ArticlesListComponent } from './article/articles-list/articles-list.component';
-import { ArticleComponent } from './article/article/article.component';
+import { ArticleComponent } from './article/article.component';
+import { ArticleModule } from './article/article.module';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'articles/list', pathMatch: 'full' },
   {
-    path: '',
-    component: ArticlesListComponent,
+    path: 'articles',
+    loadChildren: () =>
+      import('./article/article.module').then((m) => ArticleModule),
   },
   {
-    path: 'article',
-    component: ArticleComponent,
-  },
-  {
-    path: 'login',
+    path: 'auth',
     loadChildren: () => import('./auth/auth.module').then((m) => AuthModule),
   },
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, { enableTracing: false }),
-    BrowserModule,
-  ],
+  imports: [RouterModule.forRoot(routes, { enableTracing: false })],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
