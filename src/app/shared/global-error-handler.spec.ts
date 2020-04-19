@@ -1,4 +1,4 @@
-import { ErrorHandler } from './global-error-handler';
+import { GlobalErrorHandler } from './global-error-handler';
 
 describe('ErrorHandler', () => {
   it('should create an instance', () => {

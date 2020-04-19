@@ -1,10 +1,10 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpHeaders } from '@angular/common/http';
 import { UserLoginInterface } from './user-login.interface';
 import { Observable } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
+import { catchError, map, first } from 'rxjs/operators';
 import { AccessToken } from './access-token.interface';
+import { InternalErrorHandler } from '../shared/internal-error-handler';
 @Injectable({
   providedIn: 'root',
 })
@@ -13,26 +13,31 @@ export class AuthService {
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
-    private http: HttpClient
+    private http: HttpClient,
+    private errorHandler: InternalErrorHandler
   ) {}
 
-  public get bearerToken(): string {
-    if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem('Authentication');
-    }
-  }
-  public set bearerToken(token: string) {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.setItem('Authentication', token);
-      this.token = token;
-    }
+  login(credentials: UserLoginInterface): Observable<AccessToken> {
+    return this.http.post<AccessToken>('auth/login', credentials);
   }
 
-  login(credentials: UserLoginInterface): Observable<AccessToken> {
-    return this.http.post<AccessToken>('auth/login', credentials).pipe(
-      tap((res) => {
-        this.bearerToken = res.access_token;
+  isLoggedIn(): Observable<boolean> {
+    return this.http
+      .head<HttpResponse<null>>('auth/session', {
+        observe: 'response',
+        headers: new HttpHeaders({ 'Cache-Control': 'no-cache' }),
       })
-    );
+      .pipe(
+        catchError(
+          this.errorHandler.handleError<HttpResponse<boolean>>(
+            'isLoggedIn',
+            new HttpResponse({ status: 401 })
+          )
+        ),
+        first(),
+        map((res) => {
+          return res.ok;
+        })
+      );
   }
 }
