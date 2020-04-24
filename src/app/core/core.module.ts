@@ -12,7 +12,7 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
     HttpClientModule,
     LoggerModule.forRoot({
       level: NgxLoggerLevel.DEBUG,
-      serverLogLevel: NgxLoggerLevel.ERROR,
+      serverLogLevel: NgxLoggerLevel.DEBUG,
     }),
   ],
   exports: [],

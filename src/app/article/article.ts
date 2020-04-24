@@ -11,19 +11,9 @@ export interface Article {
   author: any;
   body: string;
   description: string;
+  createdAt: Date;
+  updateAt: Date;
 }
 
-export interface GetArticlesQuery {
-  take?: number;
-  skip?: number;
-  order?: OrderByCondition;
-  where?: any;
-}
-export type OrderByCondition = {
-  [columnName: string]:
-    | ('ASC' | 'DESC')
-    | {
-        order: 'ASC' | 'DESC';
-        nulls?: 'NULLS FIRST' | 'NULLS LAST';
-      };
-};
+
+

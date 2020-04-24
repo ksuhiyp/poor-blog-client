@@ -1,3 +1,6 @@
-<a [routerLink]="['/login']">
-    link to user component
-  </a>
+<a [routerLink]="['/auth/login']">
+  Login
+</a>
+<div *ngFor="let article of articles">
+  {{ article | json }}
+</div>

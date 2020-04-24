@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Injectable, Query } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Article } from './article';
 import { Observable } from 'rxjs';
+import { query } from '@angular/animations';
+import { Params } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +16,15 @@ export class ArticleService {
   getArticle(slug: string): Observable<Article> {
     return this.http.get<Article>(`article/${slug}`);
   }
-  // Get articles
+  getArticles(query?: Query) {
+    let params: Params = {};
+    if (query) {
+      Object.keys(query)
+        .filter((param) => !!query[param])
+        .forEach((param) => (params = { param: query[param] }));
+    }
+    return this.http.get<Article[]>('article', params);
+  }
   // Create an article
   // Update an article
   // Delete an article
