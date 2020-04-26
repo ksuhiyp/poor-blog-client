@@ -1,18 +1,28 @@
 # PoorBlogClient
 ## First Week Of Ramadan
-- [ ] Implement article list component
+- [x] Implement article list component
 - [ ] Implement create article
-    * make a floating add button
+    * Make a floating add button that appears on all routes except article/create
+    * Make Create New Tag List
+    * Validate Existed Tag List Entry  
 - [ ] Implement update article
-    * make a floating edit button
+    * make a floating edit button on article detail
 - [ ] Implement delete article
-    * make floating delete button
+    * make floating delete button on article detial
 - [ ] Implement layout
 
 ## Seconde Week Of Ramadan
+- [ ] Implement article photos
+    * Implement API uploader endpoint
+    * Implement Client uploader
 - [ ] Implement article search in article list
+
+## Third Week Of Ramadan
+- [ ] Implement article comments
 - [ ] Design article list page
 - [ ] Design article detail page
 
-## Third Week Of Ramadan
-- [ ] Get suhayb.sucks
+
+## Forth Week Of Ramadan
+- [ ] Get a domain
+- [ ] Deploy

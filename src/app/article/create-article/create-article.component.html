@@ -1,0 +1,63 @@
+<p>create-article works!</p>
+<form (ngSubmit)="onSubmit()" [formGroup]="form">
+  <button type="submit" hidden #submit></button>
+  <div fxLayout="column">
+    <mat-form-field>
+      <input matInput placeholder="title" [formControl]="form.controls.title" />
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        matInput
+        placeholder="description"
+        [formControl]="form.controls.description"
+      />
+    </mat-form-field>
+    <!-- <mat-form-field>
+      <mat-label>Select Tags</mat-label>
+      <mat-select [formControl]="form.controls.tagList" multiple>
+        <mat-option *ngFor="let tag of tags" [value]="tag.title">{{
+          tag.title
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field> -->
+    <mat-form-field>
+      <mat-chip-list #tagList>
+        <mat-chip
+          *ngFor="let tag of selectedTags"
+          [selectable]="true"
+          [removable]="true"
+          (removed)="removeTag(tag)"
+          >{{ tag.title }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input #tagsInput
+          placeholder="Tags"
+          [formControl]="tagsCtrl"
+          [matChipInputFor]="tagList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="addTag($event)"
+          [matAutocomplete]="auto"
+        />
+      </mat-chip-list>
+      <mat-autocomplete
+        (optionSelected)="addSelected($event)"
+        #auto="matAutocomplete"
+      >
+        <mat-option
+          *ngFor="let tag of filteredTags | async"
+          [value]="tag"
+          >{{ tag.title }}</mat-option
+        >
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center"></div>
+</form>
+<ckeditor
+  [editor]="editor"
+  [(ngModel)]="editorBody"
+  (change)="onBodyChange($event)"
+></ckeditor>
+<button mat-button [disabled]="!form.valid" (click)="submit.click()">
+  Submit {{ form.valid }}
+</button>

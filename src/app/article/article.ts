@@ -1,3 +1,5 @@
+import { ArticleService } from './article.service';
+
 export interface GetArticleQuery {
   readonly slug?: string;
   readonly id?: number;
@@ -15,5 +17,4 @@ export interface Article {
   updateAt: Date;
 }
 
-
-
+export type ArticleDTO = Omit<Article, 'slug' | 'createdAt' | 'updatedAt'>;

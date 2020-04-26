@@ -1,9 +1,9 @@
 import { Injectable, Query } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Article } from './article';
+import { HttpClient } from '@angular/common/http';
+import { Article, ArticleDTO } from './article';
 import { Observable } from 'rxjs';
-import { query } from '@angular/animations';
 import { Params } from '@angular/router';
+import { TagsList } from '../shared/models/shared.models';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +25,14 @@ export class ArticleService {
     }
     return this.http.get<Article[]>('article', params);
   }
-  // Create an article
+
+  getAvailableTags(): Observable<TagsList[]> {
+    return this.http.get<TagsList[]>(`tag`);
+  }
+
+  postArticle(article: ArticleDTO): Observable<Article> {
+    return this.http.post<Article>('article', article);
+  }
   // Update an article
   // Delete an article
 }
