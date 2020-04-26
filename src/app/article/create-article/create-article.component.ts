@@ -34,7 +34,7 @@ export class CreateArticleComponent implements OnInit {
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   editorBody = '';
   editor = ClassicEditor;
-  tags: TagsList[];
+  tags: TagsList[] = [];
   filteredTags: Subject<TagsList[]> = new Subject();
   selectedTags: TagsList[] = [];
   tagsCtrl = new FormControl('');
@@ -69,11 +69,14 @@ export class CreateArticleComponent implements OnInit {
   }
   addTag(event) {
     const term = event.value.trim();
-    this.selectedTags.filter((tag) => tag.title === term).length
-      ? noop()
-      : this.selectedTags.push({ title: term });
+    if (term) {
+      this.selectedTags.filter((tag) => tag.title === term).length
+        ? noop()
+        : this.selectedTags.push({ title: term });
 
-    this.tagsCtrl.setValue(null);
+      this.tagsCtrl.setValue(null);
+      this.tagsInput.nativeElement.value = null;
+    }
   }
   addSelected(event: MatAutocompleteSelectedEvent) {
     const tag = event.option.value;
