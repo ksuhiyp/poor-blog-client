@@ -15,7 +15,7 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
       serverLogLevel: NgxLoggerLevel.DEBUG,
     }),
   ],
-  exports: [],
+  exports: [BrowserModule],
   providers: [],
 })
 export class CoreModule {
