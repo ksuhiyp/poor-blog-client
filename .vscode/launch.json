@@ -5,24 +5,25 @@
       
       {
         "name": "Client",
-        "type": "firefox",
+        "type": "chrome",
         "request": "launch",
         "url": "http://localhost:4200/#",
         "webRoot": "${workspaceFolder}",
-        "firefoxArgs": [ 
+        "runtimeExecutable": "/usr/bin/chromium",
+        "runtimeArgs": [ 
             "-start-debugger-server","-url https://localhost:4200/#"
         ],
-        "reloadOnChange": {
-            "watch": [
-                "${workspaceFolder}/**/*.ts",
-                "${workspaceFolder}/**/*.html",
-                "${workspaceFolder}/**/*.css",
-                "${workspaceFolder}/**/*.scss"
-            ],
-            "ignore": [
-                "${workspaceFolder}/node_modules/**"
-            ]
-        }
+        // "reloadOnChange": {
+        //     "watch": [
+        //         "${workspaceFolder}/**/*.ts",
+        //         "${workspaceFolder}/**/*.html",
+        //         "${workspaceFolder}/**/*.css",
+        //         "${workspaceFolder}/**/*.scss"
+        //     ],
+        //     "ignore": [
+        //         "${workspaceFolder}/node_modules/**"
+        //     ]
+        // }
     }
     ]
   }
