@@ -19,6 +19,8 @@ import { ChangeEvent } from '@ckeditor/ckeditor5-angular';
 import { Observable, noop, Subject } from 'rxjs';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { ActivatedRoute } from '@angular/router';
+import { CommunicatorService } from 'src/app/shared/services/communicator.service';
 @Component({
   selector: 'app-create-article',
   templateUrl: './create-article.component.html',
@@ -27,7 +29,9 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 export class CreateArticleComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
-    private articleService: ArticleService
+    private articleService: ArticleService,
+    private activatedRoute: ActivatedRoute,
+    private communicator: CommunicatorService
   ) {}
 
   @ViewChild('tagsInput') tagsInput: ElementRef<HTMLInputElement>;
@@ -46,6 +50,7 @@ export class CreateArticleComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.communicator.urlSegmant.next(this.activatedRoute.snapshot.url);
     this.articleService
       .getAvailableTags()
       .pipe(tap((tags) => (this.tags = tags)))
@@ -57,8 +62,8 @@ export class CreateArticleComponent implements OnInit {
     this.articleService.postArticle(this.form.value).subscribe();
   }
 
-  onBodyChange({ editor }: ChangeEvent) {
-    this.form.controls.body.setValue(editor.getData());
+  onBodyChange(event: ChangeEvent) {
+    // this.form.controls.body.setValue(event.editor.getData());
   }
 
   removeTag(tag) {
