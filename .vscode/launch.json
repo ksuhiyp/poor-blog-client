@@ -1,29 +1,19 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-   
-      
-      {
-        "name": "Client",
-        "type": "chrome",
-        "request": "launch",
-        "url": "http://localhost:4200/#",
-        "webRoot": "${workspaceFolder}",
-        "runtimeExecutable": "/usr/bin/chromium",
-        "runtimeArgs": [ 
-            "-start-debugger-server","-url https://localhost:4200/#"
-        ],
-        // "reloadOnChange": {
-        //     "watch": [
-        //         "${workspaceFolder}/**/*.ts",
-        //         "${workspaceFolder}/**/*.html",
-        //         "${workspaceFolder}/**/*.css",
-        //         "${workspaceFolder}/**/*.scss"
-        //     ],
-        //     "ignore": [
-        //         "${workspaceFolder}/node_modules/**"
-        //     ]
-        // }
-    }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chromium against localhost",
+      "url": "http://localhost:4200/#",
+      "webRoot": "${workspaceFolder}",
+      "runtimeExecutable": "/usr/bin/chromium",
+      "runtimeArgs": [
+        "--new-window",
+        "-user-data-dir=\"/${workspaceFolder}/DevProfile\"",
+        "--remote-debugging-port=9222",
+        "--disable-background-networking"
+      ]
   }
+  ]
+}
