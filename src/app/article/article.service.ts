@@ -1,5 +1,5 @@
 import { Injectable, Query } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Article, ArticleDTO } from './article';
 import { Observable } from 'rxjs';
 import { Params } from '@angular/router';
@@ -30,7 +30,7 @@ export class ArticleService {
     return this.http.get<TagsList[]>(`tag`);
   }
 
-  postArticle(article: ArticleDTO): Observable<Article> {
+  postArticle(article: FormData): Observable<Article> {
     return this.http.post<Article>('article', article);
   }
   // Update an article

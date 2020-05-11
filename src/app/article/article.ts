@@ -15,6 +15,7 @@ export interface Article {
   description: string;
   createdAt: Date;
   updateAt: Date;
+  photo?: FormDataEntryValue;
 }
 
 export type ArticleDTO = Omit<Article, 'slug' | 'createdAt' | 'updatedAt'>;

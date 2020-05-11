@@ -1,9 +1,16 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  ChangeDetectorRef,
+} from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
   Validators,
   FormControl,
+  Form,
 } from '@angular/forms';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ArticleService } from '../article.service';
@@ -21,6 +28,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ActivatedRoute } from '@angular/router';
 import { CommunicatorService } from 'src/app/shared/services/communicator.service';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 @Component({
   selector: 'app-create-article',
   templateUrl: './create-article.component.html',
@@ -31,20 +39,20 @@ export class CreateArticleComponent implements OnInit {
     private formBuilder: FormBuilder,
     private articleService: ArticleService,
     private activatedRoute: ActivatedRoute,
-    private communicator: CommunicatorService
+    private communicator: CommunicatorService,
+    private sanitizer: DomSanitizer
   ) {}
-
+  droppedArticleImage: SafeUrl;
   @ViewChild('tagsInput') tagsInput: ElementRef<HTMLInputElement>;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
   editorBody = '';
   editor = ClassicEditor;
   tags: TagsList[] = [];
   filteredTags: Subject<TagsList[]> = new Subject();
-  selectedTags: TagsList[] = [];
-  tagsCtrl = new FormControl('');
+  selectedTags: string[] = [];
   form: FormGroup = this.formBuilder.group({
     title: ['', Validators.required],
-    tagList: [''],
+    tagList: [[]],
     body: ['', Validators.required],
     description: [''],
   });
@@ -56,46 +64,46 @@ export class CreateArticleComponent implements OnInit {
       .pipe(tap((tags) => (this.tags = tags)))
       .subscribe();
 
-    this.onTagsCtrlChange().subscribe();
+    this.onTagListChange().subscribe();
   }
   onSubmit() {
-    this.articleService.postArticle(this.form.value).subscribe();
+    this.articleService.postArticle(this.toFormData(this.form)).subscribe();
   }
 
   onBodyChange(event: ChangeEvent) {
-    // this.form.controls.body.setValue(event.editor.getData());
+    this.form.controls.body.setValue(event.editor.getData());
   }
 
   removeTag(tag) {
     const selectedTagIndex = this.selectedTags.findIndex(
-      (selectedTag) => tag.id === selectedTag.id
+      (selectedTag) => tag === selectedTag
     );
     this.selectedTags.splice(selectedTagIndex, 1);
   }
   addTag(event) {
     const term = event.value.trim();
     if (term) {
-      this.selectedTags.filter((tag) => tag.title === term).length
+      this.selectedTags.filter((tag) => tag === term).length
         ? noop()
-        : this.selectedTags.push({ title: term });
+        : this.selectedTags.push(term);
 
-      this.tagsCtrl.setValue(null);
       this.tagsInput.nativeElement.value = null;
+      this.form.get('tagList').patchValue(this.selectedTags);
     }
   }
   addSelected(event: MatAutocompleteSelectedEvent) {
     const tag = event.option.value;
     const term = tag.title;
-    this.selectedTags.filter((tag) => tag.title === term).length
+    this.selectedTags.filter((tag) => tag === term).length
       ? noop()
-      : this.selectedTags.push({ title: term });
+      : this.selectedTags.push(term);
 
-    this.tagsCtrl.setValue(null);
+    // this.tagsCtrl.setValue(null);
     this.tagsInput.nativeElement.value = null;
   }
 
-  onTagsCtrlChange(): Observable<any> {
-    return this.tagsCtrl.valueChanges.pipe(
+  onTagListChange(): Observable<any> {
+    return this.form.get('tagList').valueChanges.pipe(
       startWith(''),
       distinctUntilChanged(),
       debounceTime(50),
@@ -112,5 +120,50 @@ export class CreateArticleComponent implements OnInit {
     const regex = new RegExp(term, 'gmi');
     const filteredTags = this.tags.filter((tag) => tag.title.match(regex));
     return filteredTags;
+  }
+
+  private domSanitizer(url) {
+    return this.sanitizer.bypassSecurityTrustUrl(url);
+  }
+  public droppedImage(file: File) {
+    this.renderArticleImage(file);
+    this.form.addControl('photo', new FormControl(file));
+  }
+  private renderArticleImage(file: File) {
+    const mimeType = file.type;
+    let base64;
+    this.droppedArticleImage = `data:${mimeType};base64,`;
+    file.arrayBuffer().then((arrayBuffer) => {
+      base64 = btoa(
+        new Uint8Array(arrayBuffer).reduce(
+          (data, byte) => data + String.fromCharCode(byte),
+          ''
+        )
+      );
+      this.droppedArticleImage = this.domSanitizer(
+        `data:${mimeType};base64,${base64}`
+      );
+    });
+  }
+
+  private toFormData(form: FormGroup) {
+    const formData = new FormData();
+    // tslint:disable-next-line: forin
+    for (const formField in form.value) {
+      if (formField === 'photo') {
+        formData.append(
+          formField,
+          form.get(formField).value,
+          form.value[formField].name
+        );
+      } else if (formField === 'tagList') {
+        form.value[formField].forEach((tag) => {
+          formData.append(formField, form.value[formField]);
+        });
+      } else {
+        formData.append(formField, form.value[formField]);
+      }
+    }
+    return formData;
   }
 }

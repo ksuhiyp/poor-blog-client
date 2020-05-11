@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { url } from 'inspector';
+import {  ActivatedRoute } from '@angular/router';
 import { CommunicatorService } from './shared/services/communicator.service';
 import { tap, map } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
