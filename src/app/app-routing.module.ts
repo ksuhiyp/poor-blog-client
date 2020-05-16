@@ -6,7 +6,7 @@ import { ArticleModule } from './article/article.module';
 const routes: Routes = [
   { path: '', redirectTo: 'articles/list', pathMatch: 'full' },
   {
-    path: 'articles',
+    path: 'article',
     loadChildren: () =>
       import('./article/article.module').then((m) => ArticleModule),
   },

@@ -20,7 +20,11 @@ export class AppComponent implements OnInit {
     const dialogRef = this.dialog.open(CreateArticleComponent, { width: '400px', data: {} });
     dialogRef
       .afterClosed()
-      .pipe(tap(() => this.router.navigate(['article', 'edit', dialogRef.componentInstance.article.id])))
+      .pipe(
+        tap(() =>
+          this.router.navigate(['/article', 'edit', dialogRef.componentInstance.article.id])
+        )
+      )
       .subscribe();
   }
 }

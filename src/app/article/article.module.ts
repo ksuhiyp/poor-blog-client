@@ -6,13 +6,14 @@ import { CommonModule } from '@angular/common';
 import { ArticleRoutingModule } from './article-routing.module';
 import { CreateArticleComponent } from './create-article/create-article.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import { FileUploaderComponent } from '../shared/components/file-uploader/file-uploader.component';
 import { NgxFileDropModule } from 'ngx-file-drop';
+import { UpdateArticleComponent } from './update-article/update-article.component';
 @NgModule({
   declarations: [
     ArticlesListComponent,
     ArticleDetailComponent,
     CreateArticleComponent,
+    UpdateArticleComponent,
   ],
   imports: [
     SharedModule,
