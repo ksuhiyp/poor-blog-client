@@ -13,9 +13,10 @@ export class ArticleService {
 
   // Get an article
 
-  getArticle(slug: string): Observable<Article> {
-    return this.http.get<Article>(`article/${slug}`);
+  getArticle(slugOrId: string | number): Observable<Article> {
+    return this.http.get<Article>(`article/${slugOrId}`);
   }
+
   getArticles(query?: Query) {
     let params: Params = {};
     if (query) {
