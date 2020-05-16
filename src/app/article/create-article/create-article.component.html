@@ -1,17 +1,29 @@
-<form (ngSubmit)="onSubmit()" [formGroup]="form">
-  <button type="submit" hidden #submit></button>
-  <div fxLayout="column">
-    <mat-form-field>
-      <input matInput placeholder="title" [formControl]="form.controls.title" />
-    </mat-form-field>
-    <mat-form-field>
+<div fxLayout="column">
+  <h1 mat-dialog-title fxFlexAlign="center">Create Article</h1>
+  <form mat-dialog-content (ngSubmit)="onSubmit()" [formGroup]="form">
+    <button type="submit" hidden #submit></button>
+    <div fxLayout="column">
+      <mat-form-field>
+        <input matInput placeholder="title" [formControl]="form.controls.title" />
+        <mat-error *ngIf="form.controls.title.getError('required')"> Title is <strong>required</strong> </mat-error>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center"></div>
+  </form>
+  <div mat-dialog-actions fxFlexAlign="center">
+    <button mat-raised-button color="accent" [disabled]="!form.valid" (click)="submit.click()">Submit {{ form.value | json }}</button>
+  </div>
+</div>
+<!-- <app-file-uploader (droppedFile)="droppedImage($event)"></app-file-uploader> -->
+<!-- <img [src]="droppedArticleImage" alt="" /> -->
+<!-- <mat-form-field>
       <input
         matInput
         placeholder="description"
         [formControl]="form.controls.description"
       />
-    </mat-form-field>
-    <mat-form-field>
+    </mat-form-field> -->
+<!-- <mat-form-field>
       <mat-chip-list #tagList>
         <mat-chip
           *ngFor="let tag of selectedTags"
@@ -39,17 +51,9 @@
           tag.title
         }}</mat-option>
       </mat-autocomplete>
-    </mat-form-field>
-  </div>
-  <div fxLayout="row" fxLayoutAlign="center"></div>
-</form>
-<ckeditor
+    </mat-form-field> -->
+<!-- <ckeditor
   [editor]="editor"
   [(ngModel)]="editorBody"
   (change)="onBodyChange($event)"
-></ckeditor>
-<button mat-button [disabled]="!form.valid" (click)="submit.click()">
-  Submit {{ form.value | json }}
-</button>
-<app-file-uploader (droppedFile)="droppedImage($event)"></app-file-uploader>
-<img [src]="droppedArticleImage" alt="" />
+></ckeditor> -->

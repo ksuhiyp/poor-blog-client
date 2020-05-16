@@ -18,4 +18,4 @@ export interface Article {
   photo?: FormDataEntryValue;
 }
 
-export type ArticleDTO = Omit<Article, 'slug' | 'createdAt' | 'updatedAt'>;
+export type CreateArticleDTO = Pick<Article, 'title'>;
