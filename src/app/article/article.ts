@@ -6,6 +6,7 @@ export interface GetArticleQuery {
 }
 
 export interface Article {
+  id: number;
   slug: string;
   title: string;
   tagList: string;

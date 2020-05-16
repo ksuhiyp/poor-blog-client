@@ -11,7 +11,7 @@
     <div fxLayout="row" fxLayoutAlign="center"></div>
   </form>
   <div mat-dialog-actions fxFlexAlign="center">
-    <button mat-raised-button color="accent" [disabled]="!form.valid" (click)="submit.click()">Submit {{ form.value | json }}</button>
+    <button mat-raised-button [mat-dialog-close] color="accent" [disabled]="!form.valid" (click)="submit.click()">Submit {{ form.value | json }}</button>
   </div>
 </div>
 <!-- <app-file-uploader (droppedFile)="droppedImage($event)"></app-file-uploader> -->

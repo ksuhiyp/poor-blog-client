@@ -1,38 +1,24 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, Form } from '@angular/forms';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ArticleService } from '../article.service';
-import { tap, distinctUntilChanged, debounceTime, startWith, map } from 'rxjs/operators';
-import { TagsList } from 'src/app/shared/models/shared.models';
-import { ChangeEvent } from '@ckeditor/ckeditor5-angular';
-import { Observable, noop, Subject } from 'rxjs';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ActivatedRoute } from '@angular/router';
-import { CommunicatorService } from 'src/app/shared/services/communicator.service';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Article } from '../article';
 @Component({
   selector: 'app-create-article',
   templateUrl: './create-article.component.html',
   styleUrls: ['./create-article.component.scss'],
 })
 export class CreateArticleComponent implements OnInit {
-  constructor(
-    private formBuilder: FormBuilder,
-    private articleService: ArticleService,
-    private activatedRoute: ActivatedRoute,
-    private communicator: CommunicatorService
-  ) {}
+  article: Article;
+  constructor(private formBuilder: FormBuilder, private articleService: ArticleService, private activatedRoute: ActivatedRoute) {}
   @ViewChild('tagsInput') tagsInput: ElementRef<HTMLInputElement>;
   form: FormGroup = this.formBuilder.group({
     title: ['', Validators.required],
   });
 
-  ngOnInit(): void {
-    this.communicator.urlSegmant.next(this.activatedRoute.snapshot.url);
-  }
+  ngOnInit(): void {}
   onSubmit() {
-    this.articleService.postArticle(this.form.value).subscribe();
+    this.articleService.postArticle(this.form.value).subscribe((article) => (this.article = article));
   }
 
   // onBodyChange(event: ChangeEvent) {
