@@ -1,4 +1,4 @@
 <router-outlet> </router-outlet>
-<button mat-fab *ngIf="!isOnArticlePost" class="floating-btn">
+<button mat-fab *ngIf="!isOnArticlePost" class="floating-btn" (click)="openAddArticleModal()">
   <mat-icon>add</mat-icon>
 </button>
