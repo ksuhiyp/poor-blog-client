@@ -9,18 +9,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { UpdateArticleComponent } from './update-article/update-article.component';
 @NgModule({
-  declarations: [
-    ArticlesListComponent,
-    ArticleDetailComponent,
-    CreateArticleComponent,
-    UpdateArticleComponent,
-  ],
-  imports: [
-    SharedModule,
-    CommonModule,
-    ArticleRoutingModule,
-    CKEditorModule,
-    NgxFileDropModule,
-  ],
+  declarations: [ArticlesListComponent, ArticleDetailComponent, CreateArticleComponent, UpdateArticleComponent],
+  imports: [SharedModule, CommonModule, ArticleRoutingModule, CKEditorModule, NgxFileDropModule],
 })
 export class ArticleModule {}
