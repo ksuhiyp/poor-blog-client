@@ -4,9 +4,10 @@ import { ArticlesListComponent } from './articles-list/articles-list.component';
 import { ArticleDetailComponent } from './article-detail/article-detail.component';
 import { UpdateArticleComponent } from './update-article/update-article.component';
 import { AuthenticationGuard } from '../shared/gaurds/authentication.guard';
+import { ArticleResolver } from './article-resolver.service';
 const routes: Routes = [
   { path: 'list', component: ArticlesListComponent },
-  { path: 'edit/:id', component: UpdateArticleComponent, canActivate: [AuthenticationGuard] },
+  { path: 'edit/:id', component: UpdateArticleComponent, canActivate: [AuthenticationGuard], resolve: { article: ArticleResolver } },
   { path: ':slug', component: ArticleDetailComponent },
 ];
 
