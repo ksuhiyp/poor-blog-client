@@ -10,6 +10,7 @@
       <mat-form-field>
         <input matInput placeholder="description" [formControl]="form.controls.description" />
       </mat-form-field>
+      <app-chips-autocompleat-input [allOptions]="form.value.tags || []"></app-chips-autocompleat-input>
     </div>
     <div fxLayout="row" fxLayoutAlign="center">
       <ckeditor [editor]="editor" [formControl]="form.controls.body"></ckeditor>

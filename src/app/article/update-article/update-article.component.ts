@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../article.service';
-import { switchMap, tap } from 'rxjs/operators';
 import { Article } from '../article';
-import { Observable } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditor5 } from '@ckeditor/ckeditor5-angular';

@@ -6,11 +6,11 @@ import { RouterModule } from '@angular/router';
 import { FileUploaderComponent } from './components/file-uploader/file-uploader.component';
 import { NgxFileDropModule } from 'ngx-file-drop';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
+import { ChipsAutocompleatInputComponent } from './components/chips-autocompleat-input/chips-autocompleat-input.component';
 
 @NgModule({
-  imports: [NgxFileDropModule,MaterialModule,CommonModule],
-  declarations: [FileUploaderComponent],
+  imports: [NgxFileDropModule, MaterialModule, CommonModule, ReactiveFormsModule],
+  declarations: [FileUploaderComponent, ChipsAutocompleatInputComponent],
   exports: [
     MaterialModule,
     FlexLayoutModule,
@@ -18,6 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
     ReactiveFormsModule,
     RouterModule,
     FileUploaderComponent,
+    ChipsAutocompleatInputComponent,
   ],
 })
 export class SharedModule {}
