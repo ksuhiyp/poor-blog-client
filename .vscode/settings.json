@@ -1,1 +1,1 @@
-{ "editor.defaultFormatter": "esbenp.prettier-vscode" }
+{ "editor.defaultFormatter": "esbenp.prettier-vscode", "terminal.integrated.shellArgs.linux": ["-i"] }
