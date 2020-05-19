@@ -1,9 +1,10 @@
 import { Injectable, Query } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { Article, CreateArticleDTO } from './article';
 import { Observable } from 'rxjs';
 import { Params } from '@angular/router';
 import { Tags } from '../shared/models/shared.models';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -38,6 +39,18 @@ export class ArticleService {
 
   putArticle(data: Partial<Article>, articleId): Observable<Article> {
     return this.http.put<Article>(`article/${articleId}`, data);
+  }
+
+  patchArticlePoster(data: FormData, articleId: number) {
+    return this.http.patch(`article/${articleId}/poster`, data, { reportProgress: true, observe: 'events', responseType: 'json' }).pipe(
+      map((event) => {
+        switch (event.type) {
+          case HttpEventType.UploadProgress:
+            const progress = Math.round((100 * event.loaded) / event.total);
+            return { status: 'progress', progress };
+        }
+      })
+    );
   }
   // Delete an article
 }

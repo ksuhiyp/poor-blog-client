@@ -17,3 +17,10 @@ export type Tags = {
   title: string;
   id?: number;
 };
+
+export interface Poster {
+  bucket?: string;
+  location?: string;
+  key: string;
+  mimetype: string;
+}

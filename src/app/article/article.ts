@@ -1,5 +1,5 @@
 import { ArticleService } from './article.service';
-import { Tags } from '../shared/models/shared.models';
+import { Tags, Poster } from '../shared/models/shared.models';
 
 export interface GetArticleQuery {
   readonly slug?: string;
@@ -17,7 +17,7 @@ export interface Article {
   description: string;
   createdAt: Date;
   updateAt: Date;
-  photo?: FormDataEntryValue;
+  poster?: Poster;
 }
 
 export type CreateArticleDTO = Pick<Article, 'title'>;
