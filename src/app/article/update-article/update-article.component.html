@@ -1,8 +1,9 @@
-<div fxLayout="column">
-  <h1 mat-dialog-title fxFlexAlign="center">Create Article</h1>
-  <form mat-dialog-content (ngSubmit)="onSubmit()" [formGroup]="form">
-    <button type="submit" hidden #submit></button>
-    <div fxLayout="column">
+<!-- <mat-progress-bar mode="determinate" [value]="posterProgress" *ngIf="posterInProgress"></mat-progress-bar> -->
+<div fxLayout="row" fxLayoutAlign="center center" fxFill>
+  <div fxLayout="column" fxFlexAlign="center" fxLayoutGap="1rem">
+    <h1 mat-dialog-title>Create Article</h1>
+    <form mat-dialog-content (ngSubmit)="onSubmit()" [formGroup]="form" fxLayout="column" fxFlexAlign="center">
+      <button type="submit" hidden #submit></button>
       <mat-form-field>
         <input matInput placeholder="title" [formControl]="form.controls.title" />
         <mat-error *ngIf="form.controls.title.getError('required')"> Title is <strong>required</strong> </mat-error>
@@ -12,17 +13,18 @@
       </mat-form-field>
 
       <app-chips-autocompleat-input [(selectedOptions)]="articleTags" [allOptions]="allTags"></app-chips-autocompleat-input>
-    </div>
-    <div fxLayout="row" fxLayoutAlign="center">
-      <ckeditor [editor]="editor" [formControl]="form.controls.body"></ckeditor>
-    </div>
-  </form>
-  <div mat-dialog-actions fxFlexAlign="center">
-    <button mat-raised-button color="accent" [disabled]="!form.valid" (click)="submit.click()">Submit {{ form.value | json }}</button>
+      <div fxLayoutAlign="center">
+        <ckeditor [editor]="editor" [formControl]="form.controls.body"></ckeditor>
+      </div>
+    </form>
+    <app-file-uploader (droppedFile)="droppedImage($event)"></app-file-uploader>
+    <button mat-raised-button color="accent" [disabled]="!form.valid" (click)="submit.click()">Submit</button>
   </div>
 </div>
+
 <!-- <app-file-uploader (droppedFile)="droppedImage($event)"></app-file-uploader> -->
-<!-- <img [src]="droppedArticleImage" alt="" /> -->
+<img [src]="article.poster?.location" alt="" />
+{{ article.poster.location }}
 
 <!-- <mat-form-field>
         <mat-chip-list #tagList>
