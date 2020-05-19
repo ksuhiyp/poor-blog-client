@@ -13,7 +13,7 @@ export type OrderByCondition = {
       };
 };
 
-export type TagsList = {
+export type Tags = {
   title: string;
   id?: number;
 };

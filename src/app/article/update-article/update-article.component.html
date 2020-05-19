@@ -10,16 +10,15 @@
       <mat-form-field>
         <input matInput placeholder="description" [formControl]="form.controls.description" />
       </mat-form-field>
-      <app-chips-autocompleat-input [allOptions]="form.value.tags || []"></app-chips-autocompleat-input>
+
+      <app-chips-autocompleat-input [(selectedOptions)]="articleTags" [allOptions]="allTags"></app-chips-autocompleat-input>
     </div>
     <div fxLayout="row" fxLayoutAlign="center">
       <ckeditor [editor]="editor" [formControl]="form.controls.body"></ckeditor>
     </div>
   </form>
   <div mat-dialog-actions fxFlexAlign="center">
-    <!-- <button mat-raised-button [mat-dialog-close] color="accent" [disabled]="!form.valid" (click)="submit.click()">
-      Submit {{ form.value | json }}
-    </button> -->
+    <button mat-raised-button color="accent" [disabled]="!form.valid" (click)="submit.click()">Submit {{ form.value | json }}</button>
   </div>
 </div>
 <!-- <app-file-uploader (droppedFile)="droppedImage($event)"></app-file-uploader> -->

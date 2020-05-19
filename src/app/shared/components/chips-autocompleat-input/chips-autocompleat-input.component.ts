@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject, BehaviorSubject } from 'rxjs';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
@@ -11,11 +11,19 @@ import { startWith, map } from 'rxjs/operators';
   templateUrl: './chips-autocompleat-input.component.html',
   styleUrls: ['./chips-autocompleat-input.component.scss'],
 })
-export class ChipsAutocompleatInputComponent implements AfterViewInit {
-  @Input() allOptions: string[];
+export class ChipsAutocompleatInputComponent {
+  private _allOptions: string[] = [];
+  @Input()
+  set allOptions(value: string[]) {
+    this._allOptions = value || [];
+  }
+  get allOptions() {
+    return this._allOptions;
+  }
+  @Input() selectedOptions: string[];
+  @Output() selectedOptionsChange = new BehaviorSubject<string[]>([]);
   @ViewChild('optionInput') optionInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
-  options: string[] = [];
   optionCtrl = new FormControl();
   filteredOptions: Observable<string[]> = of([]);
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -23,11 +31,9 @@ export class ChipsAutocompleatInputComponent implements AfterViewInit {
   constructor() {
     this.filteredOptions = this.optionCtrl.valueChanges.pipe(
       startWith(''),
-      map((option: string | null) => (option ? this.filter(option) : this.allOptions.slice()))
+      map((option: string | null) => (option ? this.filter(option) : this._allOptions?.slice()))
     );
   }
-
-  ngAfterViewInit(): void {}
 
   add(event: MatChipInputEvent) {
     const input = event.input;
@@ -35,32 +41,35 @@ export class ChipsAutocompleatInputComponent implements AfterViewInit {
 
     // Add our fruit
     if ((value || '').trim()) {
-      this.options.push(value.trim());
+      this.selectedOptions.push(value.trim());
     }
 
     // Reset the input value
     if (input) {
-        input.value = '';
+      input.value = '';
     }
 
     this.optionCtrl.setValue(null);
+    this.selectedOptionsChange.next(this.selectedOptions);
   }
 
   selected(event: MatAutocompleteSelectedEvent) {
-    this.options.push(event.option.viewValue);
+    this.selectedOptions.push(event.option.viewValue);
     this.optionInput.nativeElement.value = '';
     this.optionCtrl.setValue(null);
+    this.selectedOptionsChange.next(this.selectedOptions);
   }
 
   remove(option: string) {
-    const index = this.options.indexOf(option);
+    const index = this.selectedOptions.indexOf(option);
     if (index !== -1) {
-      this.options.splice(index, 1);
+      this.selectedOptions.splice(index, 1);
+      this.selectedOptionsChange.next(this.selectedOptions);
     }
   }
 
   private filter(value: string) {
     const filterValue = value.toLowerCase();
-    return this.allOptions.filter((option) => option.toLowerCase().indexOf(filterValue) === 0);
+    return this._allOptions.filter((option) => option.toLowerCase().indexOf(filterValue) === 0);
   }
 }

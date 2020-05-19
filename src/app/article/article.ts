@@ -1,4 +1,5 @@
 import { ArticleService } from './article.service';
+import { Tags } from '../shared/models/shared.models';
 
 export interface GetArticleQuery {
   readonly slug?: string;
@@ -9,7 +10,7 @@ export interface Article {
   id: number;
   slug: string;
   title: string;
-  tagList: string;
+  tags: Tags[];
   // TODO: type for author
   author: any;
   body: string;

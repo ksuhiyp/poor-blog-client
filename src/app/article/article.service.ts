@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Article, CreateArticleDTO } from './article';
 import { Observable } from 'rxjs';
 import { Params } from '@angular/router';
-import { TagsList } from '../shared/models/shared.models';
+import { Tags } from '../shared/models/shared.models';
 
 @Injectable({
   providedIn: 'root',
@@ -27,13 +27,17 @@ export class ArticleService {
     return this.http.get<Article[]>('article', params);
   }
 
-  getAvailableTags(): Observable<TagsList[]> {
-    return this.http.get<TagsList[]>(`tag`);
+  getAvailableTags(): Observable<Tags[]> {
+    return this.http.get<Tags[]>(`tag`);
   }
 
   postArticle(article: CreateArticleDTO): Observable<Article> {
     return this.http.post<Article>('article', article);
   }
   // Update an article
+
+  putArticle(data: Partial<Article>, articleId): Observable<Article> {
+    return this.http.put<Article>(`article/${articleId}`, data);
+  }
   // Delete an article
 }

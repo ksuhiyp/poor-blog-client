@@ -1,6 +1,6 @@
 <mat-form-field>
   <mat-chip-list #chipList>
-    <mat-chip *ngFor="let option of options" (removed)="remove(option)" [selectable]="true" [removable]="true">
+    <mat-chip *ngFor="let option of selectedOptions" (removed)="remove(option)" [selectable]="true" [removable]="true">
       {{ option }}
       <mat-icon matChipRemove>cancel</mat-icon>
     </mat-chip>
@@ -15,6 +15,6 @@
     />
   </mat-chip-list>
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-    <mat-option *ngFor="let option of filteredOptions | async" [value]="option"></mat-option>
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">{{option}}</mat-option>
   </mat-autocomplete>
 </mat-form-field>

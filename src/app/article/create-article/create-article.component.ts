@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators, FormControl, Form } from '@angular/
 import { ArticleService } from '../article.service';
 import { ActivatedRoute } from '@angular/router';
 import { Article } from '../article';
+import { tap } from 'rxjs/operators';
+import { MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-create-article',
   templateUrl: './create-article.component.html',
@@ -10,7 +12,12 @@ import { Article } from '../article';
 })
 export class CreateArticleComponent implements OnInit {
   article: Article;
-  constructor(private formBuilder: FormBuilder, private articleService: ArticleService, private activatedRoute: ActivatedRoute) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private articleService: ArticleService,
+    private activatedRoute: ActivatedRoute,
+    private dialogRef: MatDialogRef<CreateArticleComponent>
+  ) {}
   @ViewChild('tagsInput') tagsInput: ElementRef<HTMLInputElement>;
   form: FormGroup = this.formBuilder.group({
     title: ['', Validators.required],
@@ -18,7 +25,15 @@ export class CreateArticleComponent implements OnInit {
 
   ngOnInit(): void {}
   onSubmit() {
-    this.articleService.postArticle(this.form.value).subscribe((article) => (this.article = article));
+    this.articleService
+      .postArticle(this.form.value)
+      .pipe(
+        tap((article) => {
+          this.article = article;
+          this.dialogRef.close();
+        })
+      )
+      .subscribe();
   }
 
   // onBodyChange(event: ChangeEvent) {
