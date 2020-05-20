@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable, of, Subject, BehaviorSubject } from 'rxjs';
+import { Observable, of, Subject, BehaviorSubject, noop } from 'rxjs';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
@@ -40,7 +40,7 @@ export class ChipsAutocompleatInputComponent {
     const value = event.value;
 
     // Add our fruit
-    if ((value || '').trim()) {
+    if ((value || '').trim() && !this.selectedOptions.includes(value.trim())) {
       this.selectedOptions.push(value.trim());
     }
 
