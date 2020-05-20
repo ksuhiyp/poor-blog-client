@@ -1,9 +1,9 @@
 <!-- <mat-progress-bar mode="determinate" [value]="posterProgress" *ngIf="posterInProgress"></mat-progress-bar> -->
 <!-- <div fxLayout="row" fxLayoutAlign="center center" fxFill> -->
 <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
-  <h1 mat-dialog-title>Create Article</h1>
-  <app-file-uploader (droppedFile)="droppedImage($event)"></app-file-uploader>
-  <img [src]="article.poster?.location" alt="" />
+  <h1 mat-dialog-title>Editing {{ article.title }}</h1>
+  <app-file-uploader (droppedFile)="droppedImage($event)" fxFill></app-file-uploader>
+  <img [src]="article.poster?.location" alt="" loading="lazy" />
 
   <form mat-dialog-content (ngSubmit)="onSubmit()" [formGroup]="form" fxLayout="column" fxFill>
     <button type="submit" hidden #submit></button>
