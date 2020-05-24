@@ -16,7 +16,7 @@
     </mat-form-field>
     <app-chips-autocompleat-input [(selectedOptions)]="articleTags" [allOptions]="allTags"></app-chips-autocompleat-input>
   </form>
-  <ckeditor [editor]="editor" [formControl]="form.controls.body" fxFlex="10 10 100" fxFill></ckeditor>
+  <ckeditor #ckeditor [editor]="editor" [config]="editorConfig" [formControl]="form.controls.body" fxFlex="10 10 100" fxFill></ckeditor>
 
   <button mat-raised-button color="accent" [disabled]="!form.valid" (click)="submit.click()">Submit</button>
 </div>

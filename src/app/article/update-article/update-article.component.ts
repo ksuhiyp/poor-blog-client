@@ -1,24 +1,22 @@
-import { Component, OnInit, Output, Sanitizer } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterContentInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../article.service';
 import { Article } from '../article';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { CKEditor5 } from '@ckeditor/ckeditor5-angular';
-import { map, shareReplay, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { Tags } from 'src/app/shared/models/shared.models';
-import { HttpEventType } from '@angular/common/http';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-
+import * as CKEditor from '@suhayb/ckeditor-build-custom-upload';
+// import * as CK from '@ckeditor/ckeditor5-build-classic';
+import { SimpleUploadConfig } from 'src/app/shared/models/simple-upload-config';
 @Component({
   selector: 'app-update-article',
   templateUrl: './update-article.component.html',
   styleUrls: ['./update-article.component.scss'],
 })
-export class UpdateArticleComponent implements OnInit {
+export class UpdateArticleComponent implements OnInit, AfterContentInit {
   constructor(private activatedRoute: ActivatedRoute, private articleService: ArticleService, private sanitizer: DomSanitizer) {}
-  editor: CKEditor5.BaseEditor = ClassicEditor;
+  editor;
   article: Article;
   articleTags: string[] = [];
   form: FormGroup = new FormGroup({});
@@ -26,13 +24,56 @@ export class UpdateArticleComponent implements OnInit {
   posterProgress = 0;
   posterInProgress = false;
   droppedArticlePoster: SafeUrl;
+
+  editorConfig;
   ngOnInit(): void {
     this.article = this.activatedRoute.snapshot.data.article;
+    this.editor = CKEditor;
+
     this.articleTags = this.article.tags?.map((tag) => tag.title) || [];
     this.getTags().subscribe((tags) => (this.allTags = tags));
     this.initArticleForm();
+    this.editorConfig = {
+      simpleUpload: {
+        // The URL that the images are uploaded to.
+        uploadUrl: `http://suhayb.blog/api/article/${this.article.id}/image`,
+        fieldName: 'image',
+        method: 'PATCH',
+      },
+      toolbar: {
+        items: [
+          'heading',
+          '|',
+          'bold',
+          'italic',
+          'link',
+          'bulletedList',
+          'numberedList',
+          '|',
+          'indent',
+          'outdent',
+          '|',
+          'imageUpload',
+          'blockQuote',
+          'insertTable',
+          'mediaEmbed',
+          'undo',
+          'redo',
+        ],
+      },
+      language: 'en',
+      image: {
+        toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side'],
+      },
+      table: {
+        contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells'],
+      },
+      licenseKey: '',
+    };
     // this.renderArticleImage(file);
   }
+
+  ngAfterContentInit() {}
 
   private initArticleForm() {
     this.form = new FormGroup({
