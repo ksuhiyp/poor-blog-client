@@ -7,7 +7,6 @@ import { map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import * as CKEditor from '@suhayb/ckeditor-build-custom-upload';
-// import * as CK from '@ckeditor/ckeditor5-build-classic';
 import { SimpleUploadConfig } from 'src/app/shared/models/simple-upload-config';
 @Component({
   selector: 'app-update-article',
@@ -25,11 +24,10 @@ export class UpdateArticleComponent implements OnInit, AfterContentInit {
   posterInProgress = false;
   droppedArticlePoster: SafeUrl;
 
-  editorConfig;
+  editorConfig: SimpleUploadConfig;
   ngOnInit(): void {
     this.article = this.activatedRoute.snapshot.data.article;
     this.editor = CKEditor;
-
     this.articleTags = this.article.tags?.map((tag) => tag.title) || [];
     this.getTags().subscribe((tags) => (this.allTags = tags));
     this.initArticleForm();
