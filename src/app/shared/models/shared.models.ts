@@ -18,9 +18,13 @@ export type Tags = {
   id?: number;
 };
 
-export interface Poster {
+export interface Image {
   bucket?: string;
   location?: string;
   key: string;
   mimetype: string;
+}
+
+export interface DeleteArticleImagesDTO {
+  location: string;
 }

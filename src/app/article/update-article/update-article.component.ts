@@ -1,19 +1,20 @@
-import { Component, OnInit, ViewChild, AfterContentInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterContentInit, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../article.service';
 import { Article } from '../article';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { map, tap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { map, tap, mergeAll, switchMap } from 'rxjs/operators';
+import { Observable, merge, of } from 'rxjs';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import * as CKEditor from '@suhayb/ckeditor-build-custom-upload';
 import { SimpleUploadConfig } from 'src/app/shared/models/simple-upload-config';
+import { CKEditorComponent } from '@ckeditor/ckeditor5-angular';
 @Component({
   selector: 'app-update-article',
   templateUrl: './update-article.component.html',
   styleUrls: ['./update-article.component.scss'],
 })
-export class UpdateArticleComponent implements OnInit, AfterContentInit {
+export class UpdateArticleComponent implements OnInit, AfterViewInit {
   constructor(private activatedRoute: ActivatedRoute, private articleService: ArticleService, private sanitizer: DomSanitizer) {}
   editor;
   article: Article;
@@ -23,8 +24,9 @@ export class UpdateArticleComponent implements OnInit, AfterContentInit {
   posterProgress = 0;
   posterInProgress = false;
   droppedArticlePoster: SafeUrl;
-
+  @ViewChild('ckeditor') ckeditor: CKEditorComponent;
   editorConfig: SimpleUploadConfig;
+  articleBodyImagesLocation: string[];
   ngOnInit(): void {
     this.article = this.activatedRoute.snapshot.data.article;
     this.editor = CKEditor;
@@ -71,7 +73,7 @@ export class UpdateArticleComponent implements OnInit, AfterContentInit {
     // this.renderArticleImage(file);
   }
 
-  ngAfterContentInit() {}
+  ngAfterViewInit() {}
 
   private initArticleForm() {
     this.form = new FormGroup({
@@ -108,7 +110,17 @@ export class UpdateArticleComponent implements OnInit, AfterContentInit {
       })
     );
 
-    this.articleService.putArticle(this.form.value, this.article.id).subscribe();
+    this.articleService
+      .putArticle(this.form.value, this.article.id)
+      .pipe(
+        switchMap((article) => this.deleteRemovedArticleImages(article)),
+        tap((article) => {
+          console.log(article);
+          this.article = article;
+          this.initArticleForm();
+        })
+      )
+      .subscribe();
   }
 
   private initArticlePosterForm(file: File): FormData {
@@ -129,5 +141,21 @@ export class UpdateArticleComponent implements OnInit, AfterContentInit {
       base64 = btoa(new Uint8Array(arrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), ''));
       this.droppedArticlePoster = this.domSanitizer(`data:${mimeType};base64,${base64}`);
     });
+  }
+  // Returns article images location
+  private deleteRemovedArticleImages(article): Observable<Article> {
+    const editorBody = this.form.controls.body.value;
+    const editorImages = Array.from(new DOMParser().parseFromString(editorBody, 'text/html').querySelectorAll('img')).map((img) =>
+      img.getAttribute('src')
+    );
+    console.log(editorImages);
+    const articleImages = article.images;
+    const imagesToDelete = articleImages.filter(
+      (image) => !editorImages.find((editorImagesLocation) => editorImagesLocation === image.location)
+    );
+    if (imagesToDelete.length) {
+      return this.articleService.deleteArticleImages(this.article.id, imagesToDelete);
+    }
+    return of();
   }
 }

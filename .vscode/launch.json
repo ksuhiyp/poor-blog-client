@@ -5,7 +5,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Poor Blog CLient",
-      "url": "http://localhost:4200/#",
+      "url": "http://suhayb.blog/#",
       "webRoot": "${workspaceFolder}",
       "runtimeExecutable": "/usr/bin/chromium",
       "runtimeArgs": [
@@ -14,7 +14,7 @@
         "--remote-debugging-port=9222",
         "--disable-background-networking"
       ],
-      "preLaunchTask":"npm: start"
+      "preLaunchTask":"npm: build"
     }
   ]
 }
