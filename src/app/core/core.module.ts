@@ -21,7 +21,7 @@ import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
 export class CoreModule {
   constructor(@Optional() @SkipSelf() private parentModule: CoreModule) {
     if (parentModule) {
-      throw new Error("Core Module couldn't be imported twice");
+      throw new Error('Core Module couldn\'t be imported twice');
     }
   }
 }

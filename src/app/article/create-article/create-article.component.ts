@@ -36,7 +36,7 @@ export class CreateArticleComponent implements OnInit {
       .subscribe();
   }
 
-  
+
 
   // private domSanitizer(url) {
   //   return this.sanitizer.bypassSecurityTrustUrl(url);
@@ -55,5 +55,5 @@ export class CreateArticleComponent implements OnInit {
   //   });
   // }
 
-  
+
 }
