@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterContentInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterContentInit, AfterViewInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../article.service';
 import { Article } from '../article';
@@ -9,13 +9,20 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import * as CKEditor from '@suhayb/ckeditor-build-custom-upload';
 import { SimpleUploadConfig } from 'src/app/shared/models/simple-upload-config';
 import { CKEditorComponent } from '@ckeditor/ckeditor5-angular';
+import { HttpEventType } from '@angular/common/http';
 @Component({
   selector: 'app-update-article',
   templateUrl: './update-article.component.html',
   styleUrls: ['./update-article.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UpdateArticleComponent implements OnInit, AfterViewInit {
-  constructor(private activatedRoute: ActivatedRoute, private articleService: ArticleService, private sanitizer: DomSanitizer) {}
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private articleService: ArticleService,
+    private sanitizer: DomSanitizer,
+    private cdRef: ChangeDetectorRef
+  ) {}
   editor;
   article: Article;
   articleTags: string[] = [];
@@ -89,15 +96,21 @@ export class UpdateArticleComponent implements OnInit, AfterViewInit {
   }
 
   droppedImage(file: File) {
-    this.renderArticleImage(file);
-
     const formData = this.initArticlePosterForm(file);
     this.articleService
       .patchArticlePoster(formData, this.article.id)
       .pipe(
-        tap((res) => {
-          this.posterInProgress = true;
-          this.posterProgress = res?.progress;
+        map((event) => {
+          switch (event.type) {
+            case HttpEventType.UploadProgress:
+              const progress = Math.round((100 * event.loaded) / event.total);
+              this.posterInProgress = true;
+              this.posterProgress = progress;
+              break;
+            case HttpEventType.Response:
+              this.article.poster = event.body.poster;
+              this.cdRef.markForCheck();
+          }
         })
       )
       .subscribe();
@@ -148,7 +161,6 @@ export class UpdateArticleComponent implements OnInit, AfterViewInit {
     const editorImages = Array.from(new DOMParser().parseFromString(editorBody, 'text/html').querySelectorAll('img')).map((img) =>
       img.getAttribute('src')
     );
-    console.log(editorImages);
     const articleImages = article.images;
     const imagesToDelete = articleImages.filter(
       (image) => !editorImages.find((editorImagesLocation) => editorImagesLocation === image.location)
