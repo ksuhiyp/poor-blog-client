@@ -1,5 +1,7 @@
-<p>article works!</p>
-<h1>{{ article.createdAt }}</h1>
-<h2>{{ article.title }}</h2>
-<h3>{{ article.body }}</h3>
-<h4>{{ article.author | json }}</h4>
+<div fxLayout="column" fxFill fxLayoutAlign="center center">
+  <h2>{{ article.title }}</h2>
+  <img [src]="article.poster?.location" alt="" />
+  <h1>{{ article.createdAt | date: "mediumDate" }}</h1>
+  <h3>{{ article.body }}</h3>
+  <h4>{{ article.author?.username }}</h4>
+</div>
