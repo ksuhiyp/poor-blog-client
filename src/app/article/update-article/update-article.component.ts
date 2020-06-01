@@ -35,6 +35,7 @@ export class UpdateArticleComponent implements OnInit, AfterViewInit {
   editorConfig: SimpleUploadConfig;
   articleBodyImagesLocation: string[];
   ngOnInit(): void {
+    
     this.article = this.activatedRoute.snapshot.data.article;
     this.editor = CKEditor;
     this.articleTags = this.article.tags?.map((tag) => tag.title) || [];
