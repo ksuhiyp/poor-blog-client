@@ -28,3 +28,23 @@ export interface Image {
 export interface DeleteArticleImagesDTO {
   location: string;
 }
+
+export interface UserData {
+  username: string;
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  bio: string;
+  image: string;
+}
+
+export interface Article {
+  id: number;
+  title: string;
+  slug: string;
+  describtion: string;
+  body: string;
+  poster: any;
+  images: any[];
+  tags: any[];
+}
