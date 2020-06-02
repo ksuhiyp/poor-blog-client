@@ -4,7 +4,7 @@ import { Article } from '../article';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
-
+import { constants } from 'src/app/shared/constants';
 @Component({
   selector: 'app-articles-list',
   templateUrl: './articles-list.component.html',
@@ -14,7 +14,7 @@ export class ArticlesListComponent implements OnInit {
   constructor(private articleService: ArticleService, @Inject(PLATFORM_ID) private platformId: string) {}
   articles: Article[];
   atemptee = localStorage.getItem('id');
-
+  defaultArticleImg = constants.defaultArticleImg;
   ngOnInit(): void {
     this.getArticles().subscribe();
   }

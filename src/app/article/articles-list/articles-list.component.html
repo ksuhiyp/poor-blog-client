@@ -1,17 +1,25 @@
-<a [routerLink]="['/auth/login']">
-  Login
-</a>
-
 <div fxLayout="column" fxLayoutGap="1rem">
   <mat-card *ngFor="let article of articles">
     <mat-card-header>
       <mat-card-title>{{ article.title }}</mat-card-title>
       <mat-card-subtitle>{{ article.description }}</mat-card-subtitle>
     </mat-card-header>
-    <img [routerLink]="['/article/', article.slug]" mat-card-image [src]="article.poster?.location" loading="lazy" alt="article poster" />
+    <img
+      [routerLink]="['/article/', article.slug]"
+      mat-card-image
+      [src]="article.poster?.location || defaultArticleImg"
+      loading="lazy"
+      alt="article poster"
+    />
     <mat-card-content> </mat-card-content>
     <mat-card-actions>
-      <button mat-icon-button color="primary" [routerLink]="['/article/edit/', article.slug]" [state]="{data:article}" *ngIf="canEditArticle(article)">
+      <button
+        mat-icon-button
+        color="primary"
+        [routerLink]="['/article/edit/', article.slug]"
+        [state]="{ data: article }"
+        *ngIf="canEditArticle(article)"
+      >
         <mat-icon>edit</mat-icon>
       </button>
     </mat-card-actions>
