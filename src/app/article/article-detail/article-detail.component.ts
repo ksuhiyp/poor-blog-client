@@ -3,6 +3,7 @@ import { Article } from '../article';
 import { ArticleService } from '../article.service';
 import { ActivatedRoute } from '@angular/router';
 import { tap, switchMap } from 'rxjs/operators';
+import { constants } from 'src/app/shared/constants';
 
 @Component({
   selector: 'app-article-detail',
@@ -13,7 +14,9 @@ export class ArticleDetailComponent implements OnInit {
   constructor(
     private articleService: ArticleService,
     private activatedRoute: ActivatedRoute
-  ) {}
+  ) { }
+  defaultArticleImg = constants.defaultArticleImg;
+
   article: Partial<Article> = {};
   ngOnInit(): void {
     this.activatedRoute.params

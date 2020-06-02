@@ -1,7 +1,20 @@
-<div fxLayout="column" fxFill fxLayoutAlign="center center">
-  <h2>{{ article.title }}</h2>
-  <img [src]="article.poster?.location" alt="" />
-  <h1>{{ article.createdAt | date: "mediumDate" }}</h1>
-  <h3>{{ article.body }}</h3>
-  <h4>{{ article.author?.username }}</h4>
-</div>
+<span fxLayout="row" fxLayoutAlign="space-between">
+  <p style="font-size: x-large;" fxFlexAlign="center">
+    {{ article.title }}
+  </p>
+</span>
+<span>
+  By <a target="blank" href="https://twitter.com/ksuhiyb">Suhayb Hasan</a> at
+  <time>{{ article.createdAt | date: "mediumDate" }}</time>
+</span>
+<hr />
+
+<article style="margin: 1rem 0 1rem 0;" fxLayout="column" fxFill fxLayoutAlign="center center">
+    <img [src]="article.poster?.location || defaultArticleImg" [alt]="article.title" style="margin-bottom: 1rem;" />
+    <mat-chip-list>
+      <mat-chip *ngFor="let tag of article.tags">{{ tag.title }}</mat-chip>
+    </mat-chip-list>
+    <h1></h1>
+    <p style="text-align: justify;" [innerHtml]="article.body | sanitizeHtml"></p>
+    <h4>{{ article.author?.username }}</h4>
+</article>
