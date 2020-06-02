@@ -1,17 +1,8 @@
-<div fxFlex="auto"></div>
-<div
-  fxLayout="row"
-  fxFill
-  fxLayoutAlign="center space-around"
-  fxFlex.gt-xs="500px"
-  fxFlex.gt-sm="800px"
-  fxFlex.gt-md="1000px"
-  fxFlex.gt-lg="1140px"
->
+<div style="margin: 1rem 25rem 5rem 25rem;" fxLayout="column" fxLayoutAlign="center center">
+  <app-header fxFlex.gt-md="1440" fxFill></app-header>
   <router-outlet></router-outlet>
+  <app-footer></app-footer>
 </div>
-<div fxFlex="auto"></div>
-
 <button mat-fab *ngIf="!isOnArticlePost" class="floating-btn" (click)="openAddArticleModal()">
   <mat-icon>add</mat-icon>
 </button>
