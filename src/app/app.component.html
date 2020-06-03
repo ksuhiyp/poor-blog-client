@@ -3,6 +3,8 @@
   <router-outlet></router-outlet>
   <app-footer></app-footer>
 </div>
-<button mat-fab *ngIf="!isOnArticlePost" class="floating-btn" (click)="openAddArticleModal()">
+<div *ngIf="!isOnArticlePost"></div>
+<button mat-fab *ngIf="isLoggedIn$ | async as loggedIn;" class="floating-btn" (click)="openAddArticleModal()">
   <mat-icon>add</mat-icon>
 </button>
+
