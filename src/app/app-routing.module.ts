@@ -4,7 +4,7 @@ import { AuthModule } from './auth/auth.module';
 import { ArticleModule } from './article/article.module';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'articles/list', pathMatch: 'full' },
+  { path: '', redirectTo: 'article/list', pathMatch: 'full' },
   {
     path: 'article',
     loadChildren: () =>
