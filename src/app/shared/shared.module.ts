@@ -8,10 +8,11 @@ import { NgxFileDropModule } from 'ngx-file-drop';
 import { CommonModule } from '@angular/common';
 import { ChipsAutocompleatInputComponent } from './components/chips-autocompleat-input/chips-autocompleat-input.component';
 import { SanitizeHtmlPipe } from './pipes/sanitize-html.pipe';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   imports: [NgxFileDropModule, MaterialModule, CommonModule, ReactiveFormsModule],
-  declarations: [FileUploaderComponent, ChipsAutocompleatInputComponent, SanitizeHtmlPipe],
+  declarations: [FileUploaderComponent, ChipsAutocompleatInputComponent, SanitizeHtmlPipe, ConfirmationDialogComponent],
   exports: [
     MaterialModule,
     FlexLayoutModule,

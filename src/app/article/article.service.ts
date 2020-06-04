@@ -1,10 +1,9 @@
 import { Injectable, Query } from '@angular/core';
-import { HttpClient, HttpEvent, HttpEventType, HttpHeaders, HttpUploadProgressEvent } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Article, CreateArticleDTO } from './article';
 import { Observable } from 'rxjs';
 import { Params } from '@angular/router';
-import { Tags, DeleteArticleImagesDTO, Image } from '../shared/models/shared.models';
-import { map } from 'rxjs/operators';
+import { Tags, Image } from '../shared/models/shared.models';
 
 @Injectable({
   providedIn: 'root',
@@ -53,5 +52,9 @@ export class ArticleService {
     };
 
     return this.http.delete<Article>(`article/${articleId}/images`, options);
+  }
+
+  deleteArticle(articleId: number): Observable<HttpResponse<any>> {
+    return this.http.delete<any>(`article/${articleId}`, { observe: 'response' });
   }
 }

@@ -48,3 +48,11 @@ export interface Article {
   images: any[];
   tags: any[];
 }
+
+export interface ConfirmationDialogConfig {
+  confirm: string;
+  dismiss: string;
+  title: string;
+  question: string;
+  action: string;
+}
