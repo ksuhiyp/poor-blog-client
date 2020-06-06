@@ -10,11 +10,11 @@
 <hr />
 
 <article style="margin: 1rem 0 1rem 0;" fxLayout="column" fxFill fxLayoutAlign="center center">
-    <img [src]="article.poster?.location || defaultArticleImg" [alt]="article.title" style="margin-bottom: 1rem;" />
-    <mat-chip-list>
-      <mat-chip *ngFor="let tag of article.tags">{{ tag.title }}</mat-chip>
-    </mat-chip-list>
-    <h1></h1>
-    <p style="text-align: justify;" [innerHtml]="article.body | sanitizeHtml"></p>
-    <h4>{{ article.author?.username }}</h4>
+  <img [src]="article.poster?.location || defaultArticleImg" [alt]="article.title" style="margin-bottom: 1rem;" />
+  <mat-chip-list>
+    <mat-chip *ngFor="let tag of article.tags">{{ tag.title }}</mat-chip>
+  </mat-chip-list>
+  <h1></h1>
+  <p style="text-align: justify;" [innerHtml]="article.body | sanitizeHtml"></p>
+  <h4>{{ article.author?.username }}</h4>
 </article>
