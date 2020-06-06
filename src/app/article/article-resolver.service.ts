@@ -11,9 +11,9 @@ import { of } from 'rxjs';
 export class ArticleResolver implements Resolve<Article> {
   constructor(private service: ArticleService, private router: Router) {}
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const data = this.router.getCurrentNavigation().extras.state as Article;
+    const data = this.router.getCurrentNavigation().extras.state;
     if (data) {
-      return of(data);
+      return of(data.data as Article);
     } else if (route.paramMap.has('slug')) {
       return this.service.getArticle(route.paramMap.get('slug'));
     } else {

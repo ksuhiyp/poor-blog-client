@@ -32,7 +32,11 @@ export class AppComponent implements OnInit {
       .afterClosed()
       .pipe(
         tap(() =>
-          dialogRef.componentInstance.article ? this.router.navigate(['/article', 'edit', dialogRef.componentInstance.article.id]) : noop()
+          dialogRef.componentInstance.article
+            ? this.router.navigate(['/article', 'edit', dialogRef.componentInstance.article.id], {
+                state: { data: dialogRef.componentInstance.article },
+              })
+            : noop()
         )
       )
       .subscribe();
