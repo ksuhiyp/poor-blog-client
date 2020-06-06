@@ -1,15 +1,16 @@
-import { Component, OnInit, ViewChild, AfterContentInit, AfterViewInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ArticleService } from '../article.service';
 import { Article } from '../article';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { map, tap, mergeAll, switchMap } from 'rxjs/operators';
-import { Observable, merge, of } from 'rxjs';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { map, tap, switchMap } from 'rxjs/operators';
+import { Observable, of, empty, EMPTY } from 'rxjs';
+import { SafeUrl } from '@angular/platform-browser';
 import * as CKEditor from '@suhayb/ckeditor-build-custom-upload';
 import { SimpleUploadConfig } from 'src/app/shared/models/simple-upload-config';
 import { CKEditorComponent } from '@ckeditor/ckeditor5-angular';
 import { HttpEventType } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-update-article',
   templateUrl: './update-article.component.html',
@@ -20,8 +21,9 @@ export class UpdateArticleComponent implements OnInit, AfterViewInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private articleService: ArticleService,
-    private sanitizer: DomSanitizer,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
   editor;
   article: Article;
@@ -126,12 +128,17 @@ export class UpdateArticleComponent implements OnInit, AfterViewInit {
     this.articleService
       .putArticle(this.form.value, this.article.id)
       .pipe(
-        switchMap((article) => this.deleteRemovedArticleImages(article)),
-        tap((article) => {
-          console.log(article);
-          this.article = article;
-          this.initArticleForm();
-        })
+        switchMap((updatedArticle) =>
+          this.deleteRemovedArticleImages(updatedArticle).pipe(
+            tap((article) => {
+              if (!!article) {
+                this.article = article;
+                this.initArticleForm();
+                this.router.navigateByUrl('/').then(() => this.snackBar.open('Article Updated', 'dismiss'));
+              }
+            })
+          )
+        )
       )
       .subscribe();
   }
@@ -142,10 +149,8 @@ export class UpdateArticleComponent implements OnInit, AfterViewInit {
     return formData;
   }
 
-
-
   // Returns article images location
-  private deleteRemovedArticleImages(article): Observable<Article> {
+  private deleteRemovedArticleImages(article): Observable<never | Article> {
     const editorBody = this.form.controls.body.value;
     const editorImages = Array.from(new DOMParser().parseFromString(editorBody, 'text/html').querySelectorAll('img')).map((img) =>
       img.getAttribute('src')
@@ -156,7 +161,8 @@ export class UpdateArticleComponent implements OnInit, AfterViewInit {
     );
     if (imagesToDelete.length) {
       return this.articleService.deleteArticleImages(this.article.id, imagesToDelete);
+    } else {
+      return of(this.article);
     }
-    return of();
   }
 }
