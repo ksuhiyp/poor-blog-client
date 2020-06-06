@@ -142,19 +142,8 @@ export class UpdateArticleComponent implements OnInit, AfterViewInit {
     return formData;
   }
 
-  private domSanitizer(url) {
-    return this.sanitizer.bypassSecurityTrustUrl(url);
-  }
 
-  private renderArticleImage(file: File) {
-    const mimeType = file.type;
-    let base64;
-    this.droppedArticlePoster = `data:${mimeType};base64,`;
-    file.arrayBuffer().then((arrayBuffer) => {
-      base64 = btoa(new Uint8Array(arrayBuffer).reduce((data, byte) => data + String.fromCharCode(byte), ''));
-      this.droppedArticlePoster = this.domSanitizer(`data:${mimeType};base64,${base64}`);
-    });
-  }
+
   // Returns article images location
   private deleteRemovedArticleImages(article): Observable<Article> {
     const editorBody = this.form.controls.body.value;

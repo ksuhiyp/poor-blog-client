@@ -54,7 +54,7 @@ export class ArticleService {
     return this.http.delete<Article>(`article/${articleId}/images`, options);
   }
 
-  deleteArticle(articleId: number): Observable<HttpResponse<any>> {
+  deleteArticle(articleId: number): Observable<HttpResponse<Article>> {
     return this.http.delete<any>(`article/${articleId}`, { observe: 'response' });
   }
 }

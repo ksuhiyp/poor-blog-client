@@ -45,10 +45,8 @@ export class ArticlesListComponent implements OnInit {
     dialogRef
       .afterClosed()
       .pipe(
-        tap((res) => console.log(res)),
         switchMap((res) => {
           if (res) {
-            console.log(res);
             return this.articleService.deleteArticle(article.id);
           } else {
             // tslint:disable-next-line: deprecation
@@ -58,11 +56,17 @@ export class ArticlesListComponent implements OnInit {
         tap((res) => {
           if (res.ok) {
             this.logger.open('Article Deleted');
+            this.removeArticle(res.body.id);
           } else {
             this.logger.open('Article deletion failed');
           }
         })
       )
       .subscribe();
+  }
+
+  removeArticle(articleId) {
+    const articleIndex = this.articles.findIndex((article) => article.id === articleId);
+    this.articles.splice(articleIndex, 1);
   }
 }
