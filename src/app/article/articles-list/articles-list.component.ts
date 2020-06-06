@@ -1,13 +1,12 @@
 import { Component, OnInit, Query, Inject, PLATFORM_ID } from '@angular/core';
 import { ArticleService } from '../article.service';
 import { Article } from '../article';
-import { Observable, of, empty } from 'rxjs';
-import { tap, switchMap, mapTo } from 'rxjs/operators';
+import { Observable, empty } from 'rxjs';
+import { tap, switchMap } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 import { constants } from 'src/app/shared/constants';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
-import { ConfirmationDialogConfig } from 'src/app/shared/models/shared.models';
 import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-articles-list',

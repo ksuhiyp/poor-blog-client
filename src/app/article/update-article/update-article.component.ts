@@ -11,6 +11,8 @@ import { SimpleUploadConfig } from 'src/app/shared/models/simple-upload-config';
 import { CKEditorComponent } from '@ckeditor/ckeditor5-angular';
 import { HttpEventType } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
 @Component({
   selector: 'app-update-article',
   templateUrl: './update-article.component.html',
@@ -23,7 +25,8 @@ export class UpdateArticleComponent implements OnInit, AfterViewInit {
     private articleService: ArticleService,
     private cdRef: ChangeDetectorRef,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) {}
   editor;
   article: Article;
@@ -163,6 +166,25 @@ export class UpdateArticleComponent implements OnInit, AfterViewInit {
       return this.articleService.deleteArticleImages(this.article.id, imagesToDelete);
     } else {
       return of(this.article);
+    }
+  }
+
+  canDeactivate(): Observable<boolean> {
+    if (this.form.dirty) {
+      const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        data: { dismiss: 'No', confirm: 'Leave', title: this.article.title, action: 'Leave editint' },
+      });
+      return dialogRef.afterClosed().pipe(
+        map((res) => {
+          if (res) {
+            return true;
+          } else {
+            return false;
+          }
+        })
+      );
+    } else {
+      return of(true);
     }
   }
 }

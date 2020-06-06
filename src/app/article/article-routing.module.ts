@@ -5,6 +5,7 @@ import { ArticleDetailComponent } from './article-detail/article-detail.componen
 import { UpdateArticleComponent } from './update-article/update-article.component';
 import { AuthenticationGuard } from '../shared/gaurds/authentication.guard';
 import { ArticleResolver } from './article-resolver.service';
+import { UpdateArticleDeactivateGuard } from '../shared/gaurds/update-article-deactivate.guard';
 const routes: Routes = [
   { path: 'list', component: ArticlesListComponent },
   {
@@ -12,6 +13,7 @@ const routes: Routes = [
     component: UpdateArticleComponent,
     canActivate: [AuthenticationGuard],
     resolve: { article: ArticleResolver },
+    canDeactivate: [UpdateArticleDeactivateGuard],
   },
   { path: ':slug', component: ArticleDetailComponent, resolve: { article: ArticleResolver } },
 ];
